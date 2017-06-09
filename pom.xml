@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.drentsoft</groupId>
     <artifactId>cardResizer</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.9.1.0</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,7 +39,7 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.0.2</version>
@@ -51,7 +51,7 @@
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>
+            </plugin>//-->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -73,6 +73,8 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
+                            <finalName>${project.artifactId}-v${project.version}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
                 </executions>
