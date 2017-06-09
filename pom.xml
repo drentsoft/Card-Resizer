@@ -39,7 +39,7 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.0.2</version>
@@ -51,7 +51,7 @@
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>//-->
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -73,7 +73,7 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>${project.artifactId}-v${project.version}</finalName>
+                            <finalName>${project.artifactId}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
