@@ -28,11 +28,57 @@
  */
 package com.drentsoft.cardresizer;
 
+import java.io.File;
+
 /**
  *
  * @author Derwent Ready @ Drentsoft
  */
 public class ImageInfo {
     
+    public File path;
     public String outputName;
+    
+    public ImageInfo() {
+        outputName = "";
+    }
+    
+    public ImageInfo( File path ) {
+        this();
+        setPath(path);
+    }
+    
+    public final void setPath( File p ) {
+        path = p;
+    }
+    
+    public File getPath() {
+        return path;
+    }
+    
+    public void setOutputName( String n ) {
+        outputName = n;
+    }
+    
+    public String getOutputName() {
+        return outputName;
+    }
+    
+    public String getOutputPath() {
+        if( outputName.isEmpty() ) {
+            return path.getName(); // Return the original filename
+        } else {
+            return outputName;
+        }
+    }
+    
+    @Override
+    public String toString() {
+        if( outputName.isEmpty() ) {
+            return path.getAbsolutePath();
+        } else {
+            return path.getAbsolutePath() + " | " + outputName;
+        }
+    }
+    
 }

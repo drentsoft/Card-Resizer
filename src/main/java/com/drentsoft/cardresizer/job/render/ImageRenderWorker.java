@@ -26,7 +26,7 @@ public class ImageRenderWorker extends RenderWorker {
 
     @Override
     protected BufferedImage render() {
-        return job.getResizedImage( job.getOriginalImage(job.originals.get(fileID)), job.outputDimensions.get(dimID) );
+        return job.getResizedImage( job.getOriginalImage(job.originals.get(fileID).path), job.outputDimensions.get(dimID) );
     }
 
 }

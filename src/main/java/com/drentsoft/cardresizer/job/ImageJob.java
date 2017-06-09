@@ -28,6 +28,7 @@
  */
 package com.drentsoft.cardresizer.job;
 
+import com.drentsoft.cardresizer.ImageInfo;
 import com.drentsoft.cardresizer.OutputDimension;
 import java.io.File;
 import java.io.PrintStream;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
  */
 public class ImageJob extends ResizeJob {
     
-    public ArrayList<File> originals;
+    public ArrayList<ImageInfo> originals;
     
     public ImageJob() {
         originals = new ArrayList<>();
@@ -52,16 +53,34 @@ public class ImageJob extends ResizeJob {
     
     @Override
     public void run( PrintStream stream ) {
-        for( File original : originals ) {
+        for( ImageInfo f : originals ) {
             for( OutputDimension dim : outputDimensions ) {
             System.out.println("Processing " + dim.toString() );
-                if( resizeImage( original, dim ) ) {
+                if( resizeImage( f.getPath(), dim ) ) {
                     stream.println("Successfully resized");
                 } else {
-                    System.err.println("Failed to resize " + original );
+                    System.err.println("Failed to resize " + f.getPath() );
                 }
             }
         }
+    }
+    
+    @Override
+    protected String getOriginalFilename( File f ) {
+        String filename = "";
+        String name = "";
+        for( ImageInfo info : originals ) {
+            if( info.path.equals(f) ) {
+                filename = info.getOutputName();
+                break;
+            }
+        }
+        if( filename.isEmpty() ) {
+            System.err.println("Couldn't find image file in list. Resorting to outputting original name.");
+            name = f.getName();
+            filename = name.substring( 0, f.getName().lastIndexOf(".") );
+        }
+        return filename;
     }
 
 }

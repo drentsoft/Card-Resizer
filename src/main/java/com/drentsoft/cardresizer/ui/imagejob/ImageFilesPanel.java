@@ -28,9 +28,12 @@
  */
 package com.drentsoft.cardresizer.ui.imagejob;
 
+import com.drentsoft.cardresizer.ImageInfo;
+import com.drentsoft.cardresizer.PDFPageInfo;
 import com.drentsoft.cardresizer.job.ImageJob;
-import java.io.File;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -52,7 +55,7 @@ public class ImageFilesPanel extends javax.swing.JPanel {
     
     public void setJob( ImageJob job ) {
         this.job = job;
-        for( File f : job.originals ) {
+        for( ImageInfo f : job.originals ) {
             filesModel.addElement(f);
         }
     }
@@ -72,6 +75,11 @@ public class ImageFilesPanel extends javax.swing.JPanel {
         getResBtn = new javax.swing.JButton();
 
         filesList.setToolTipText("Shows the open files for the current job.");
+        filesList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                filesListMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(filesList);
 
         remFilesBtn.setText("Remove File(s)");
@@ -111,6 +119,16 @@ public class ImageFilesPanel extends javax.swing.JPanel {
             job.originals.remove(i);
         }
     }//GEN-LAST:event_remFilesBtnActionPerformed
+
+    private void filesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_filesListMouseClicked
+        if( evt.getClickCount() == 2 || SwingUtilities.isRightMouseButton(evt) ) {
+            ImageInfo info = (ImageInfo) filesModel.getElementAt( filesList.getSelectedIndex() );
+            String val = JOptionPane.showInputDialog( this, "Set Output Name", info.getOutputName() );
+            if( val != null && !val.isEmpty() ) {
+                info.outputName = val;
+            }
+        }
+    }//GEN-LAST:event_filesListMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -30,6 +30,7 @@ package com.drentsoft.cardresizer.ui.imagejob;
 
 import com.drentsoft.cardresizer.CardResizer;
 import com.drentsoft.cardresizer.FileCheck;
+import com.drentsoft.cardresizer.ImageInfo;
 import com.drentsoft.cardresizer.ProcessWorker;
 import com.drentsoft.cardresizer.job.ImageJob;
 import com.drentsoft.cardresizer.job.render.ImageRenderWorker;
@@ -79,7 +80,7 @@ public class ImageJobPanel extends JobPanel {
             if( filesPnl.filesList.getSelectedIndex() >= 0 ) {
                 if( job.outputDimensions.size() > 0 ) {
                     try {
-                        BufferedImage chuck = ImageIO.read( job.originals.get(filesPnl.filesList.getSelectedIndex() ) );
+                        BufferedImage chuck = ImageIO.read( job.originals.get(filesPnl.filesList.getSelectedIndex()).path );
                         OutputFormatPanel formatPnl = (OutputFormatPanel) outputPanel.outputTabs.getSelectedComponent();
                         formatPnl.setDimensions( (int) chuck.getWidth(), (int) chuck.getHeight() );
                     } catch (IOException ex) {
@@ -96,8 +97,13 @@ public class ImageJobPanel extends JobPanel {
     
     private void addFile( File f ) {
         if( FileCheck.isImageFile(f) ) {
-            filesPnl.filesModel.addElement( f );
-            job.originals.add(f);
+            if( !alreadyInJob(f) ) {
+                ImageInfo info = new ImageInfo(f);
+                filesPnl.filesModel.addElement( info );
+                job.originals.add(info);
+            } else {
+                JOptionPane.showMessageDialog(this, "Image already in job.", "Duplicate entry", JOptionPane.INFORMATION_MESSAGE );
+            }
         } else if( FileCheck.isPDFFile(f) ) {
             // create PDF thingy
             JOptionPane.showMessageDialog(this, "Please create a PDF Job to load PDFs", WRONG_FORMAT_TITLE, JOptionPane.INFORMATION_MESSAGE );
@@ -112,6 +118,15 @@ public class ImageJobPanel extends JobPanel {
         } else if( f.isFile() ) {
             addFile(f);
         }
+    }
+    
+    private boolean alreadyInJob( File f ) {
+        for( ImageInfo info : job.originals ) {
+            if( info.path.equals(f) ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
